@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Creative Station</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --gold: #FFD166;
+    --orange: #FF6B35;
+    --deep: #0A0A0F;
+    --card: #16161F;
+    --border: rgba(255,209,102,0.15);
+    --text: #E8E8F0;
+    --muted: #7A7A8C;
+    --danger: #FF6B6B;
+    --good: #6BCB77;
+  }
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px 100px;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 0.03em;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  h1 span { color: var(--gold); }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 32px; }
+
+  /* Login gate */
+  #login-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 32px;
+    max-width: 380px;
+    margin: 80px auto;
+  }
+  #login-card h2 { font-family:'Bebas Neue',sans-serif; font-size:24px; margin-bottom:16px; color:#fff; }
+  #login-card input {
+    width: 100%;
+    background: var(--deep);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 14px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    outline: none;
+  }
+  #login-card input:focus { border-color: var(--gold); }
+  #login-error { color: var(--danger); font-size: 12px; margin-top: 8px; min-height: 16px; }
+
+  .btn {
+    padding: 12px 24px;
+    background: var(--gold);
+    color: var(--deep);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s;
+  }
+  .btn:hover { background: var(--orange); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    width: auto;
+    padding: 8px 16px;
+    font-size: 11px;
+  }
+  .btn-ghost:hover { color: var(--gold); border-color: var(--gold); background: transparent; }
+  .btn-small {
+    width: auto;
+    padding: 8px 16px;
+    font-size: 11px;
+  }
+
+  /* Main app */
+  #app { display: none; }
+
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .help-box {
+    background: rgba(255,209,102,0.05);
+    border: 1px solid var(--border);
+    padding: 16px 18px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .help-box b { color: var(--gold); }
+  .help-box a { color: var(--gold); text-decoration: underline; }
+
+  .video-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin-bottom: 14px;
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 16px;
+  }
+
+  .video-thumb {
+    width: 90px;
+    height: 90px;
+    background: #000;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: var(--muted);
+  }
+  .video-thumb video { width: 100%; height: 100%; object-fit: cover; }
+
+  .field-row { display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+  .field-row input { flex: 1; min-width: 140px; }
+
+  label.fl { font-size: 10px; letter-spacing: 0.1em; color: var(--gold); text-transform: uppercase; display:block; margin-bottom:4px; }
+
+  input[type=text], input[type=url] {
+    width: 100%;
+    background: var(--deep);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 9px 12px;
+    font-size: 13px;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+  }
+  input:focus { border-color: var(--gold); }
+
+  .card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    align-items: center;
+  }
+
+  .remove-link {
+    color: var(--danger);
+    font-size: 11px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .move-links { display: flex; gap: 6px; }
+  .move-links button {
+    background: var(--deep);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+  .move-links button:hover { color: var(--gold); border-color: var(--gold); }
+
+  .add-row { text-align: center; margin: 20px 0 36px; }
+  .add-btn {
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    padding: 16px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .add-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  .save-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    align-items: center;
+    z-index: 10;
+  }
+  .save-bar .btn { width: auto; padding: 14px 40px; }
+  #save-status { font-size: 12px; color: var(--muted); }
+  #save-status.ok { color: var(--good); }
+  #save-status.err { color: var(--danger); }
+</style>
+</head>
+<body>
+
+<div id="login-card">
+  <h2>CREATIVE<span style="color:var(--gold)">STATION</span> Admin</h2>
+  <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">Enter your admin password to manage portfolio videos.</p>
+  <input type="password" id="pw-input" placeholder="Password" autocomplete="current-password">
+  <button class="btn" id="login-btn">Log In</button>
+  <p id="login-error"></p>
+</div>
+
+<div id="app">
+  <div class="wrap">
+    <div class="top-row">
+      <div>
+        <h1>VIDEO <span>MANAGER</span></h1>
+        <p class="sub">Add, edit, reorder, or remove the videos shown in your portfolio section.</p>
+      </div>
+      <button class="btn-ghost" id="logout-btn">Log Out</button>
+    </div>
+
+    <div class="help-box">
+      <b>How to add a video:</b><br>
+      1. Upload your reel to <a href="https://cloudinary.com/users/register/free" target="_blank">Cloudinary</a> (free) — drag and drop the file in, then copy the video's URL.<br>
+      2. Or paste a direct Instagram/YouTube video URL if you have one.<br>
+      3. Paste that link below into "Video URL", fill in a title + category, and hit <b>Save All Changes</b> at the bottom.<br>
+      Changes go live on your portfolio within a few seconds — no code, no redeploy needed.
+    </div>
+
+    <div id="video-list"></div>
+
+    <div class="add-row">
+      <button class="add-btn" id="add-video-btn">+ Add New Video</button>
+    </div>
+  </div>
+
+  <div class="save-bar">
+    <span id="save-status"></span>
+    <button class="btn" id="save-btn">Save All Changes</button>
+  </div>
+</div>
+
+<script>
+const API_URL = '/api/videos';
+let videos = [];
+let password = '';
+
+const loginCard = document.getElementById('login-card');
+const app = document.getElementById('app');
+const list = document.getElementById('video-list');
+const status = document.getElementById('save-status');
+
+// ---- Login ----
+document.getElementById('login-btn').addEventListener('click', login);
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+
+function login() {
+  const pw = document.getElementById('pw-input').value;
+  if (!pw) return;
+  password = pw;
+  // We don't verify here — verification happens on first Save.
+  // Just stash it in sessionStorage-like memory and load the editor.
+  sessionStorage.setItem('cs_admin_pw', pw);
+  showApp();
+}
+
+function showApp() {
+  loginCard.style.display = 'none';
+  app.style.display = 'block';
+  loadVideos();
+}
+
+document.getElementById('logout-btn').addEventListener('click', () => {
+  sessionStorage.removeItem('cs_admin_pw');
+  password = '';
+  app.style.display = 'none';
+  loginCard.style.display = 'block';
+});
+
+// Auto-resume if already logged in this session
+const savedPw = sessionStorage.getItem('cs_admin_pw');
+if (savedPw) { password = savedPw; showApp(); }
+
+// ---- Load existing videos ----
+async function loadVideos() {
+  list.innerHTML = '<p style="color:var(--muted); font-size:13px;">Loading...</p>';
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    videos = data.videos || [];
+    if (data.warning) {
+      list.innerHTML = `<p style="color:var(--orange); font-size:12px; margin-bottom:16px;">⚠ ${data.warning} — connect Vercel KV in your project's Storage tab, then refresh.</p>`;
+    }
+    render();
+  } catch (err) {
+    list.innerHTML = '<p style="color:var(--danger); font-size:13px;">Could not load videos. Check your connection and refresh.</p>';
+  }
+}
+
+// ---- Render editor cards ----
+function render() {
+  list.innerHTML = '';
+  videos.forEach((v, i) => {
+    const card = document.createElement('div');
+    card.className = 'video-card';
+    card.innerHTML = `
+      <div class="video-thumb">${v.url ? `<video src="${escapeAttr(v.url)}" muted></video>` : (v.icon || '🎬')}</div>
+      <div>
+        <div class="field-row">
+          <div style="flex:1">
+            <label class="fl">Title</label>
+            <input type="text" data-field="title" data-i="${i}" value="${escapeAttr(v.title)}" placeholder="e.g. Café Promo Reel">
+          </div>
+          <div style="flex:1">
+            <label class="fl">Category Tag</label>
+            <input type="text" data-field="tag" data-i="${i}" value="${escapeAttr(v.tag)}" placeholder="e.g. Food · Restaurant">
+          </div>
+        </div>
+        <div class="field-row">
+          <div style="flex:1">
+            <label class="fl">Video URL (Cloudinary / direct .mp4 link)</label>
+            <input type="url" data-field="url" data-i="${i}" value="${escapeAttr(v.url)}" placeholder="https://...">
+          </div>
+        </div>
+        <div class="card-actions">
+          <div class="move-links">
+            <button data-move="up" data-i="${i}" title="Move up">↑</button>
+            <button data-move="down" data-i="${i}" title="Move down">↓</button>
+          </div>
+          <button class="remove-link" data-remove="${i}">Remove</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  list.querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const i = +e.target.dataset.i;
+      const field = e.target.dataset.field;
+      videos[i][field] = e.target.value;
+      if (field === 'url') render(); // refresh thumb preview
+    });
+  });
+  list.querySelectorAll('[data-remove]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      videos.splice(+e.target.dataset.remove, 1);
+      render();
+    });
+  });
+  list.querySelectorAll('[data-move]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const i = +e.target.dataset.i;
+      const dir = e.target.dataset.move;
+      const j = dir === 'up' ? i - 1 : i + 1;
+      if (j < 0 || j >= videos.length) return;
+      [videos[i], videos[j]] = [videos[j], videos[i]];
+      render();
+    });
+  });
+}
+
+function escapeAttr(s) {
+  return (s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+}
+
+document.getElementById('add-video-btn').addEventListener('click', () => {
+  videos.push({ id: 'v' + Date.now(), title: 'New Video', tag: 'Category', url: '', poster: '', icon: '🎬', big: false });
+  render();
+});
+
+// ---- Save ----
+document.getElementById('save-btn').addEventListener('click', async () => {
+  status.textContent = 'Saving...';
+  status.className = '';
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + password },
+      body: JSON.stringify({ videos })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      status.textContent = data.error || 'Save failed.';
+      status.className = 'err';
+      if (res.status === 401) {
+        // Wrong password — kick back to login
+        sessionStorage.removeItem('cs_admin_pw');
+        setTimeout(() => { app.style.display = 'none'; loginCard.style.display = 'block'; }, 1200);
+      }
+      return;
+    }
+    status.textContent = 'Saved! Your live site is updated.';
+    status.className = 'ok';
+  } catch (err) {
+    status.textContent = 'Network error — try again.';
+    status.className = 'err';
+  }
+});
+</script>
+</body>
+</html>
